@@ -1,8 +1,9 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { DataRecordType } from "./dataRecordType";
 import { fetchData } from "./fetchDataService";
 
-let cachedData: {timestamp: Dayjs, value: number}[] = [];
-export async function getData(count: number, offset: number = cachedData.length) {
+let cachedData: DataRecordType[] = [];
+export async function getData(count: number, offset: number = cachedData.length): Promise<DataRecordType[]> {
 
     const expectedCacheLength = offset + count;
     if(cachedData.length < expectedCacheLength) {

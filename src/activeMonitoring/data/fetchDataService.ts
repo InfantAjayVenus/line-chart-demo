@@ -1,7 +1,8 @@
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import { getRandomIntInRange } from "../../utilities/getRandomIntInRange";
+import { DataRecordType } from "./dataRecordType";
 
-export async function fetchData(latestTimeStamp = dayjs(), batchSize = 200) {
+export async function fetchData(latestTimeStamp = dayjs(), batchSize = 200): Promise<DataRecordType[]> {
     const dataList = new Array(batchSize)
         .fill(0)
         .map((_, index) => {
