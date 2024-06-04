@@ -1,6 +1,5 @@
-import { Dayjs } from "dayjs";
 
 export interface DataRecordType {
-    timestamp: Dayjs,
+    timestamp: Date,
     value: number,
 };
