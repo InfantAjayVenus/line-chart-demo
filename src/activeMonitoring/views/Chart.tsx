@@ -14,7 +14,8 @@ export interface ChartProps {
         bottom: number,
         left: number,
         right: number,
-    }
+    },
+    loadMoreData: () => void,
 };
 
 export function Chart({
@@ -25,7 +26,8 @@ export function Chart({
         left,
         right,
         bottom
-    }
+    },
+    loadMoreData,
 }: ChartProps) {
     const svgRef = useRef<HTMLDivElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
@@ -33,12 +35,18 @@ export function Chart({
     useEffect(() => {
         const zoom = d3
             .zoom()
-            .scaleExtent([1, 10])
+            .scaleExtent([1, 5])
+            .translateExtent([[0, 0],[dimensions.width - right, dimensions.height - bottom]])
             .on('zoom', ({ transform }) => {
                 x
                     .domain(transform.rescaleX(x2).domain())
                     .range([left, dimensions.width - right].map(d => transform.applyX(d)));
 
+                if(x.domain()[1].valueOf() <= data[data.length - 1].timestamp.valueOf()) {
+                    loadMoreData();
+                }
+
+                console.log('DEBUG:UPDATED_DOMAIN:', x.domain()[1].toUTCString(), data[data.length - 1].timestamp.toUTCString())
                 chartLine.selectChildren().remove();
                 chartLine
                     .attr('d', line);
