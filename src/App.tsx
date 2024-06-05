@@ -20,7 +20,7 @@ function App() {
   }, [chartContainerRef])
 
   return (
-    <div ref={chartContainerRef} id="chart-container" className="block scroll- overflow-y-auto mt-12 mx-auto h-96 w-4/5 border-slate-300 border-4 rounded-lg">
+    <div ref={chartContainerRef} id="chart-container" className="block mt-12 mx-auto h-96 w-4/5 border-slate-300 border-4 rounded-lg">
       {dataList.length > 0 && <Chart
         data={dataList}
         dimensions={dimenions}
