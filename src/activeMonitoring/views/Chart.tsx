@@ -46,7 +46,6 @@ export function Chart({
                     loadMoreData();
                 }
 
-                console.log('DEBUG:UPDATED_DOMAIN:', x.domain()[1].toUTCString(), data[data.length - 1].timestamp.toUTCString())
                 chartLine.selectChildren().remove();
                 chartLine
                     .attr('d', line);
