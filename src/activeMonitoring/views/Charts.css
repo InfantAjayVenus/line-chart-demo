@@ -11,3 +11,17 @@
 .grid text {
     display: none;
 }
+
+.tooltip {
+    display: block;
+    opacity: 0;
+    box-sizing: border-box;
+    position: fixed;
+    height: 3rem;
+    width: 6rem;
+    padding: 0.2rem 0.3rem;
+    background-color: whitesmoke;
+    font-size: 0.6rem;
+    border: 1px solid gray;
+    border-radius: 0.2rem;
+}

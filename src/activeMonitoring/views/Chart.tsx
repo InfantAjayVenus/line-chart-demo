@@ -28,6 +28,7 @@ export function Chart({
     }
 }: ChartProps) {
     const svgRef = useRef<SVGSVGElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const x = d3.scaleUtc(
@@ -35,11 +36,13 @@ export function Chart({
             [left, dimensions.width - right],
 
         );
-
         const y = d3.scaleLinear(d3.extent(data.map((item) => item.value)) as Iterable<d3.NumberValue>, [dimensions.height - bottom, top]);
-
         const line = d3.line((d: DataRecordType) => x(d.timestamp), (d: DataRecordType) => y(d.value));
+
         const svg = d3.select(svgRef.current);
+        const tooltip = d3.select(tooltipRef.current);
+        const tooltipRect = tooltipRef.current!.getBoundingClientRect();
+        const tooltipXOffset = parseInt((tooltipRect.width / 2).toString());
 
         // y-axis
         svg
@@ -86,10 +89,32 @@ export function Chart({
             .attr('cx', (d: DataRecordType) => x(d.timestamp))
             .attr('cy', (d: DataRecordType) => y(d.value))
             .attr('fill', 'steelblue')
+            .on('pointerover', (event) => {
+                const [xPos, yPos] = d3.pointer(event);
+                tooltip
+                    .style('opacity', 1)
+                    .html(
+                        `
+                            <p>
+                                ${d3.timeFormat('%d/%m/%Y %H:%M:%S')(new Date())}
+                            </p>
+                            <strong>110</strong>
+                        `
+                    )
+                    .style('left', `${xPos + tooltipXOffset}px`)
+                    .style('top', `${yPos - 15}px`);
+            })
+            .on('pointerleave', () => {
+                tooltip
+                    .style('opacity', 0);
+            })
 
     }, []);
 
     return (
-        <svg ref={svgRef} {...dimensions} />
+        <>
+            <svg ref={svgRef} {...dimensions} />
+            <div className="tooltip" ref={tooltipRef} />
+        </>
     );
 }
